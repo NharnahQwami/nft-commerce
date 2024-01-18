@@ -1,4 +1,4 @@
-# eCommerce🛒
+# nft-Commerce🛒
 
 This is a fully functional decentralized eCommerce website with a beautiful user interface and backend functionalities.
 
