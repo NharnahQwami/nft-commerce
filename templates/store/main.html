@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+           <title>Digital Artifacts Store</title>
+
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+            <link rel="shortcut icon" type="images" href="{% static 'images/icon.ico' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+          
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Glory:wght@500&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+            <script type="text/javascript">
+
+            var user = '{{request.user}}'
+
+            function getToken(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getToken('csrftoken')
+
+            function getCookie(name) {
+                // Split cookie string and get all individual name=value pairs in an array
+                var cookieArr = document.cookie.split(";");
+
+                // Loop through the array elements
+                for(var i = 0; i < cookieArr.length; i++) {
+                    var cookiePair = cookieArr[i].split("=");
+
+                    /* Removing whitespace at the beginning of the cookie name
+                    and compare it with the given string */
+                    if(name == cookiePair[0].trim()) {
+                        // Decode the cookie value and return
+                        return decodeURIComponent(cookiePair[1]);
+                    }
+                }
+
+                // Return null if not found
+                return null;
+            }
+		    var cart = JSON.parse(getCookie('cart'))
+
+            if (cart == undefined){
+                cart = {}
+                console.log('Cart Created!', cart)
+                document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+            }
+            console.log('Cart:', cart)
+
+            </script>
+     </head>
+     <body style="font-family: 'Glory', sans-serif;">
+        <p id="message"></p>
+
+        <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <style>
+          #btn-back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            border-radius: 90%; /* Make the button round */
+            padding: 10px;
+            }
+        </style>
+        <script>
+          let mybutton = document.getElementById("btn-back-to-top");
+
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+              scrollFunction();
+            };
+
+            function scrollFunction() {
+              if (
+                document.body.scrollTop > 20 ||
+                document.documentElement.scrollTop > 20
+              ) {
+                mybutton.style.display = "block";
+              } else {
+                mybutton.style.display = "none";
+              }
+            }
+            // When the user clicks on the button, scroll to the top of the document
+            mybutton.addEventListener("click", backToTop);
+
+            function backToTop() {
+              document.body.scrollTop = 0;
+              document.documentElement.scrollTop = 0;
+            }
+        </script>
+    <!-- Rest of your HTML code -->
+
+    <script>
+        window.onscroll = function() {scrollFunction()};
+        
+        function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById('btn-back-to-top').style.display = "block";
+          } else {
+            document.getElementById('btn-back-to-top').style.display = "none";
+          }
+        }
+        
+        document.getElementById('btn-back-to-top').onclick = function() {
+          document.body.scrollTop = 0; // For Safari
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+        
+        window.onload = function() {
+          const message = localStorage.getItem('message');
+          if (message) {
+            const messageElement = document.getElementById('message');
+            messageElement.innerText = message;
+            messageElement.style.color = 'green'; // Set the text color to green
+            localStorage.removeItem('message'); // Remove the message from local storage
+          }
+        }
+        </script>
+    <script>
+    window.onload = function() {
+        const message = localStorage.getItem('message');
+        if (message) {
+            const messageElement = document.getElementById('message');
+            messageElement.innerText = message;
+            messageElement.style.color = 'green'; // Set the text color to green
+            localStorage.removeItem('message'); // Remove the message from local storage
+        }
+    }
+    </script>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="{% url 'store' %}"><img width="40px" height="40px" src="{% static 'images/logo.png' %}">Artifacts Store</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <a href="{% url 'cart' %}">
+                    <img  id="cart-icon" src="{% static 'images/cart.png' %}">
+                </a>
+                <p id="cart-total">{{ cartItems }}</p>
+            </div>
+
+          </div>
+        </nav>
+
+         <div class="container">
+                <br>
+                {% block content %}
+
+
+                 {% endblock content %}
+                <br>
+         </div>
+
+
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+      <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+      
+     </body>
+</html>
