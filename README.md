@@ -5,8 +5,7 @@ This is a fully functional decentralized eCommerce website with a beautiful user
 ## Features
 
 - User and guest checkout capabilities.
-- Setting up the templates and data structure in the first two modules.
-- Adding user checkout flow with payment integration.
+- Adding user checkout flow with crypto payment integration.
 - After complete basic checkout with a logged-in user.
 - Add in the ability for users to checkout as a guest using cookies.
 
@@ -16,7 +15,8 @@ This is a fully functional decentralized eCommerce website with a beautiful user
 2. Bootstrap (Frontend)
 3. CSS (Frontend)
 4. JavaScript (Client-Side)
-5. Paypal Integration (Payment Method)
+5. BitPay Integration (Payment Method)
+6. Running on Ethereum blockchain
 
 ## To Run This Project
 
@@ -52,4 +52,4 @@ python manage.py runserver
 
 ## Deployed
 
-👉 Live Demo: [e-Commerce](#)
+👉 Live Demo: [coming soon](#)
